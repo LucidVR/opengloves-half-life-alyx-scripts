@@ -16,41 +16,41 @@ local LEFT_ID = 1
 local RIGHT_ID = 2
 
 local fingerPos = {
-				  {0, 0, 0, 0, 0}, --left
-				  {0, 0, 0, 0, 0} --right
+    {0, 0, 0, 0, 0}, --left
+    {0, 0, 0, 0, 0} --right
 }
-				  
+                  
 
 local questOrbs = {
     fireOrb = true,
     waterOrb = false,
     windOrb = true
-}	
+}   
 
-		
-		
+        
+        
 local handPositions = {
 
-	default = {500,500,500,500,500},
-	none = {0, 0, 0, 0, 0},
-	propphysics = {500, 500, 500, 500, 500}
+    default = {500,500,500,500,500},
+    none = {0, 0, 0, 0, 0},
+    propphysics = {500, 500, 500, 500, 500}
 
 }
 
 local function logDebug(line)
-	Msg("[OpenGlovesDebug] "..line .. "\n")
+    Msg("[OpenGlovesDebug] "..line .. "\n")
 end
 
-function	outputData(attachment)
+function    outputData(attachment)
   line = table.concat(fingerPos[attachment], ", ")
   
   if attachment == LEFT_ID then
-	Msg("[OpenGlovesLeft] " ..line.."\n")
+    Msg("[OpenGlovesLeft] " ..line.."\n")
   elseif attachment == RIGHT_ID then
-	Msg("[OpenGlovesRight] " ..line.."\n")
-	Msg("[OpenGlovesRight] " ..line.."\n")
+    Msg("[OpenGlovesRight] " ..line.."\n")
+    Msg("[OpenGlovesRight] " ..line.."\n")
   else
-	Msg("[OpenGlovesError] Invalid attachment \n")
+    Msg("[OpenGlovesError] Invalid attachment \n")
   end
   --local file = io.open("openglovesdata.json", "w")
   --io.output(file)
@@ -58,7 +58,7 @@ function	outputData(attachment)
   --io.close(file)
 end
 
-function 	OnItemPickup	(param) 
+function    OnItemPickup    (param) 
   local attachment = param["vr_tip_attachment"]
   logDebug(" Attachment: " .. tostring(attachment))
   logDebug("Item picked up: " .. tostring(param["item"])..tostring(param["item_name"])..tostring(attachment) .. "\n")
@@ -67,7 +67,7 @@ function 	OnItemPickup	(param)
     
 end
 
-function 	OnItemReleased	(param) 
+function    OnItemReleased  (param) 
   local attachment = param["vr_tip_attachment"]
   logDebug(" Attachment: " .. tostring(attachment))
   logDebug("Item released: " .. tostring(param["item"]) .. tostring(attachment) .. "\n")
@@ -78,15 +78,15 @@ end
 
 ListenToGameEvent('player_spawn', function(info)  
     logDebug("OPNG------------> Player spawned: " .. tostring(info["userid"]) .. "\n")     
-	
-	--if arg then
-	--	host = arg[1] or host
-	--	port = arg[2] or port
-	--end
-	--print("Attempting connection to host '" ..host.. "' and port " ..port.. "...")
-	--c = assert(socket.connect(host, port))
-	--assert(c:send("Sent from Lua in Half Life Alyx!\n"))
-	
+    
+    --if arg then
+    --  host = arg[1] or host
+    --  port = arg[2] or port
+    --end
+    --print("Attempting connection to host '" ..host.. "' and port " ..port.. "...")
+    --c = assert(socket.connect(host, port))
+    --assert(c:send("Sent from Lua in Half Life Alyx!\n"))
+    
 end, nil)
 
 if IsServer() then   
@@ -94,8 +94,8 @@ if IsServer() then
   
   -- Stop listening to the events if we're already listening to them (this is so we can safely reload the script)
 if onplayershoot_handle ~= nil then
-	StopListeningToGameEvent(	onitem_pickup_handle	)
-	StopListeningToGameEvent(	onitem_released_handle	)
+    StopListeningToGameEvent(   onitem_pickup_handle    )
+    StopListeningToGameEvent(   onitem_released_handle  )
 end
 
 if onitem_pickup_handle == nil then onitem_pickup_handle=ListenToGameEvent("item_pickup",OnItemPickup, nil) end
@@ -105,8 +105,8 @@ if onitem_released_handle == nil then onitem_released_handle=ListenToGameEvent("
 else
 
   if onplayer_opened_game_menu_handle ~= nil then
-    StopListeningToGameEvent(	onplayer_opened_game_menu_handle	)
-    StopListeningToGameEvent(	onplayer_closed_game_menu_handle	)
+    StopListeningToGameEvent(   onplayer_opened_game_menu_handle    )
+    StopListeningToGameEvent(   onplayer_closed_game_menu_handle    )
   end
   
   if onplayer_opened_game_menu_handle == nil then onplayer_opened_game_menu_handle=ListenToGameEvent("player_opened_game_menu",OnPlayerOpenedGameMenu, nil) end
