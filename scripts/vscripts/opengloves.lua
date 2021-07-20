@@ -15,53 +15,75 @@ require "game.gameinit"
 local LEFT_ID = 1
 local RIGHT_ID = 2
 
-local fingerPos = {0, 0, 0, 0, 0}, --left
+local fingerPos = {
+				  {0, 0, 0, 0, 0}, --left
 				  {0, 0, 0, 0, 0} --right
+}
 				  
-				  
+
+local questOrbs = {
+    fireOrb = true,
+    waterOrb = false,
+    windOrb = true
+}	
+
+		
+		
 local handPositions = {
 
 	default = {500,500,500,500,500},
 	none = {0, 0, 0, 0, 0},
-	prop_physics = {500, 500, 500, 500, 500},
+	propphysics = {500, 500, 500, 500, 500}
 
 }
 
-function	debugLog(line){
-	Msg("[OpenGloves] "..line)
-}
+local function logDebug(line)
+	Msg("[OpenGlovesDebug] "..line .. "\n")
+end
 
-
-function	outputData()
-  line = tostring(fingerPos)
-  local file = io.open("openglovesdata.json", "w")
-  io.output(file)
-  io.write(line)
-  io.close(file)
+function	outputData(attachment)
+  line = table.concat(fingerPos[attachment], ", ")
+  
+  if attachment == LEFT_ID then
+	Msg("[OpenGlovesLeft] " ..line.."\n")
+  elseif attachment == RIGHT_ID then
+	Msg("[OpenGlovesRight] " ..line.."\n")
+	Msg("[OpenGlovesRight] " ..line.."\n")
+  else
+	Msg("[OpenGlovesError] Invalid attachment \n")
+  end
+  --local file = io.open("openglovesdata.json", "w")
+  --io.output(file)
+  --io.write(line)
+  --io.close(file)
 end
 
 function 	OnItemPickup	(param) 
-  
-  debugLog("Item picked up: " .. tostring(param["item"])..tostring(param["item_name"])..tostring(param["vr_tip_attachment"]) .. "\n")
-  fingerPos[param["vr_tip_attachment"]] = handPositions.default
+  local attachment = param["vr_tip_attachment"]
+  logDebug(" Attachment: " .. tostring(attachment))
+  logDebug("Item picked up: " .. tostring(param["item"])..tostring(param["item_name"])..tostring(attachment) .. "\n")
+  fingerPos[attachment] = handPositions.default
+  outputData(attachment)
     
 end
 
 function 	OnItemReleased	(param) 
-  
-  debugLog("Item released: " .. tostring(param["item"]) .. tostring(param["vr_tip_attachment"]) .. "\n")
-  fingerPos[param["vr_tip_attachment"]] = handPositions.none
+  local attachment = param["vr_tip_attachment"]
+  logDebug(" Attachment: " .. tostring(attachment))
+  logDebug("Item released: " .. tostring(param["item"]) .. tostring(attachment) .. "\n")
+  fingerPos[attachment] = handPositions.none
+  outputData(attachment)
   
 end
 
 ListenToGameEvent('player_spawn', function(info)  
-    debugLog("OPNG------------> Player spawned: " .. tostring(info["userid"]) .. "\n")     
+    logDebug("OPNG------------> Player spawned: " .. tostring(info["userid"]) .. "\n")     
 	
-	if arg then
-		host = arg[1] or host
-		port = arg[2] or port
-	end
-	print("Attempting connection to host '" ..host.. "' and port " ..port.. "...")
+	--if arg then
+	--	host = arg[1] or host
+	--	port = arg[2] or port
+	--end
+	--print("Attempting connection to host '" ..host.. "' and port " ..port.. "...")
 	--c = assert(socket.connect(host, port))
 	--assert(c:send("Sent from Lua in Half Life Alyx!\n"))
 	
