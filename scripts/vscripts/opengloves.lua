@@ -45,10 +45,9 @@ function    outputData(attachment)
   line = table.concat(fingerPos[attachment], ", ")
   
   if attachment == LEFT_ID then
-    Msg("[OpenGlovesLeft] " ..line.."\n")
+    Msg("[OpenGlovesParse]{Left} ("..line..")\n")
   elseif attachment == RIGHT_ID then
-    Msg("[OpenGlovesRight] " ..line.."\n")
-    Msg("[OpenGlovesRight] " ..line.."\n")
+    Msg("[OpenGlovesParse]{Right} ("..line..")\n")
   else
     Msg("[OpenGlovesError] Invalid attachment \n")
   end
